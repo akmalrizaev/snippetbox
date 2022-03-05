@@ -3,7 +3,6 @@ package main
 import (
 	"errors" // New import
 	"fmt"
-	"html/template"
 	"net/http"
 	"strconv"
 
@@ -24,27 +23,32 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Use the new render helper.
+	app.render(w, r, "home.page.tmpl", &templateData{
+		Snippets: s,
+	})
+
 	// Create an instance of a templateData struct holding the slice of
 	// snippets.
-	data := &templateData{Snippets: s}
+	// data := &templateData{Snippets: s}
 
-	files := []string{
-		"./ui/html/home.page.tmpl",
-		"./ui/html/base.layout.tmpl",
-		"./ui/html/footer.partial.tmpl",
-	}
+	// files := []string{
+	// 	"./ui/html/home.page.tmpl",
+	// 	"./ui/html/base.layout.tmpl",
+	// 	"./ui/html/footer.partial.tmpl",
+	// }
 
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
+	// ts, err := template.ParseFiles(files...)
+	// if err != nil {
+	// 	app.serverError(w, err)
+	// 	return
+	// }
 
-	// Pass in the templateData struct when executing the template.
-	err = ts.Execute(w, data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	// // Pass in the templateData struct when executing the template.
+	// err = ts.Execute(w, data)
+	// if err != nil {
+	// 	app.serverError(w, err)
+	// }
 
 	// for _, snippet := range s {
 	// 	fmt.Fprintf(w, "%v\n", snippet)
@@ -97,23 +101,27 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Use the new render helper.
+	app.render(w, r, "show.page.tmpl", &templateData{
+		Snippet: s,
+	})
 	// Initialize a slice containing the paths to the show.page.tmpl file,
 	// plus the base layout and footer partial that we made earlier.
 
 	// Create an instance of a templateData struct holding the snippet data.
-	data := &templateData{Snippet: s}
-	files := []string{
-		"./ui/html/show.page.tmpl",
-		"./ui/html/base.layout.tmpl",
-		"./ui/html/footer.partial.tmpl",
-	}
+	// data := &templateData{Snippet: s}
+	// files := []string{
+	// 	"./ui/html/show.page.tmpl",
+	// 	"./ui/html/base.layout.tmpl",
+	// 	"./ui/html/footer.partial.tmpl",
+	// }
 
-	// Parse the template files...
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
+	// // Parse the template files...
+	// ts, err := template.ParseFiles(files...)
+	// if err != nil {
+	// 	app.serverError(w, err)
+	// 	return
+	// }
 
 	// And then execute them. Notice how we are passing in the snippet
 	// data (a models.Snippet struct) as the final parameter.
@@ -123,10 +131,10 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	// Pass in the templateData struct when executing the template.
-	err = ts.Execute(w, data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+	// err = ts.Execute(w, data)
+	// if err != nil {
+	// 	app.serverError(w, err)
+	// }
 
 	// Write the snippet data as a plain-text HTTP response body.
 	//fmt.Fprintf(w, "%v", s)
