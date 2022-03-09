@@ -2,10 +2,10 @@ package main
 
 import (
 	"html/template" // New import
-	"net/url"       // New import
 	"path/filepath" // New import
 	"time"          // New import
 
+	"github.com/akmalrizaev/snippetbox/pkg/forms" // New import
 	"github.com/akmalrizaev/snippetbox/pkg/models"
 )
 
@@ -13,12 +13,21 @@ import (
 // any dynamic data that we want to pass to our HTML templates.
 // At the moment it only contains one field, but we'll add more
 // to it as the build progresses.
+// type templateData struct {
+// 	CurrentYear int
+// 	Snippet     *models.Snippet
+// 	Snippets    []*models.Snippet
+// 	FormData    url.Values
+// 	FormErrors  map[string]string
+// }
+
+// Update the templateData fields, removing the individual FormData and
+// FormErrors fields and replacing them with a single Form field.
 type templateData struct {
 	CurrentYear int
+	Form        *forms.Form
 	Snippet     *models.Snippet
 	Snippets    []*models.Snippet
-	FormData    url.Values
-	FormErrors  map[string]string
 }
 
 // Create a humanDate function which returns a nicely formatted string
