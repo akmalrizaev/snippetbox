@@ -37,10 +37,13 @@ func (app *application) notFound(w http.ResponseWriter) {
 // the pointer. Again, we're not using the *http.Request parameter at the
 // moment, but we will do later in the book.
 func (app *application) addDefaultData(td *templateData, r *http.Request) *templateData {
+
 	if td == nil {
 		td = &templateData{}
 	}
 	td.CurrentYear = time.Now().Year()
+	// Add the flash message to the template data, if one exists.
+	td.Flash = app.session.PopString(r, "flash")
 	return td
 }
 

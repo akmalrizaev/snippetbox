@@ -88,23 +88,12 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 // Change the signature of the showSnippet handler so it is defined as a method
 // against *application.
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
-	// id, err := strconv.Atoi(r.URL.Query().Get("id"))
-	// if err != nil || id < 1 {
-	// 	app.notFound(w) // Use the notFound() helper.
-	// 	return
-	// }
-
-	// Pat doesn't strip the colon from the named capture key, so we need to
-	// get the value of ":id" from the query string instead of "id".
 	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 	if err != nil || id < 1 {
 		app.notFound(w)
 		return
 	}
 
-	// Use the SnippetModel object's Get method to retrieve the data for a
-	// specific record based on its ID. If no matching record is found,
-	// return a 404 Not Found response.
 	s, err := app.snippets.Get(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
@@ -115,61 +104,10 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Use the PopString() method to retrieve the value for the "flash" key.
-	// PopString() also deletes the key and value from the session data, so it
-	// acts like a one-time fetch. If there is no matching key in the session
-	// data this will return the empty string.
-	flash := app.session.PopString(r, "flash")
-
-	// Pass the flash message to the template.
-	app.render(w, r, "show.page.tmpl", &templateData{
-		Flash:   flash,
-		Snippet: s,
-	})
-
-	// Use the new render helper.
 	app.render(w, r, "show.page.tmpl", &templateData{
 		Snippet: s,
 	})
-	// Initialize a slice containing the paths to the show.page.tmpl file,
-	// plus the base layout and footer partial that we made earlier.
-
-	// Create an instance of a templateData struct holding the snippet data.
-	// data := &templateData{Snippet: s}
-	// files := []string{
-	// 	"./ui/html/show.page.tmpl",
-	// 	"./ui/html/base.layout.tmpl",
-	// 	"./ui/html/footer.partial.tmpl",
-	// }
-
-	// // Parse the template files...
-	// ts, err := template.ParseFiles(files...)
-	// if err != nil {
-	// 	app.serverError(w, err)
-	// 	return
-	// }
-
-	// And then execute them. Notice how we are passing in the snippet
-	// data (a models.Snippet struct) as the final parameter.
-	// err = ts.Execute(w, s)
-	// if err != nil {
-	// 	app.serverError(w, err)
-	// }
-
-	// Pass in the templateData struct when executing the template.
-	// err = ts.Execute(w, data)
-	// if err != nil {
-	// 	app.serverError(w, err)
-	// }
-
-	// Write the snippet data as a plain-text HTTP response body.
-	//fmt.Fprintf(w, "%v", s)
 }
-
-// Add a new createSnippetForm handler, which for now returns a placeholder response.
-// func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request) {
-// 	app.render(w, r, "create.page.tmpl", nil)
-// }
 
 func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, "create.page.tmpl", &templateData{
