@@ -30,6 +30,7 @@ type templateData struct {
 	Snippets        []*models.Snippet
 	Flash           string
 	IsAuthenticated bool
+	CSRFToken       string
 }
 
 // Create a humanDate function which returns a nicely formatted string
